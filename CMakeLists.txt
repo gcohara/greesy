@@ -15,6 +15,7 @@ target_include_directories(${PROJECT_NAME}.elf PRIVATE
 
 target_compile_options(${PROJECT_NAME}.elf PRIVATE
   ${MCU_OPTIONS}
+  -fno-exceptions
   --specs=nosys.specs
   -Wall
   -Wextra

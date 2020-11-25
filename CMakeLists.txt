@@ -18,7 +18,6 @@ target_compile_options(${PROJECT_NAME}.elf PRIVATE
   -fno-exceptions
   --specs=nosys.specs
   -Wall
-  -Wextra
   -g
   )
 

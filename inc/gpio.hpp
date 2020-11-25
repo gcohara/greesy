@@ -36,10 +36,11 @@ public:
 class GPIO_PIN {
 public:
     int const pin_number; // would be good to check this is 0<= x < 16
+    int const port_number;
 private:
     GPIO_PORT & port;
 public:
-    GPIO_PIN(GPIO_PORT & pl, int const pin_num);
+    GPIO_PIN(GPIO_PORT & prt, int const pin_num);
     void initialise_gp_output();
     void initialise_gp_input(GPIOInputPUPD const pupd);
     void output_low();

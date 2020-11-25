@@ -1,4 +1,5 @@
 #include "../inc/gpio.hpp"
+#include "../inc/rcc.hpp"
 
 GPIO_PORT::GPIO_PORT(GPIOPortLetter const pl):
     port_letter{ pl },
@@ -9,8 +10,8 @@ GPIO_PORT::GPIO_PORT(GPIOPortLetter const pl):
     pullup_pulldown_register{ base + 0x3 },
     input_data_register{ base + 0x4 },
     output_data_register{ base + 0x5 }    
-{        
-    *RCC_CLOCK_ENABLE_AHB |= (1 << (17 + letter_number));
+{
+    Rcc::enable_gpio_port_clock(*this);
     status = PeripheralStatus::ON;
 }
 
@@ -43,7 +44,7 @@ bool GPIO_PORT::read_input_pin(GPIO_PIN const& pin) {
 }
 
 GPIO_PIN::GPIO_PIN(GPIO_PORT & prt, int const pin_num):
-    port{ prt }, pin_number{ pin_num }{}
+    pin_number{ pin_num }, port_number{ static_cast<int>(prt.port_letter)}, port{ prt } {}
 
 void GPIO_PIN::initialise_gp_output() {
     port.initialise_gp_output(*this);

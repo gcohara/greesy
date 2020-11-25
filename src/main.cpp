@@ -1,5 +1,6 @@
 #include "../inc/main.hpp"
 #include "../inc/gpio.hpp"
+#include "../inc/sysconfig.hpp"
 
 auto main() -> int {
     GPIO_PORT portA{ GPIOPortLetter::A };
@@ -11,7 +12,7 @@ auto main() -> int {
     pin_a_0.initialise_gp_input(GPIOInputPUPD::PushDown);
     
     while (1) {
-        if (pin_a_0.read()){ pin_e_10.output_high(); }
+        if (pin_a_0.read()) { pin_e_10.output_high(); }
         else { pin_e_10.output_low(); }
     }
 }

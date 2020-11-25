@@ -58,5 +58,5 @@
 	  CMP  r1, r2
 	  BCC  reset_bss
 	  // Branch to the 'main' method.
-	  B    main
+	  B    startup
 	.size reset_handler, .-reset_handler

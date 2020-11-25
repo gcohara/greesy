@@ -6,7 +6,7 @@ project(greesyn LANGUAGES C CXX ASM)
 set(LINKER_SCRIPT "../ld/stm32f3discovery.ld")
 set(MCU_OPTIONS -mcpu=cortex-m4 -mthumb)
 
-file(GLOB SOURCES "src/*.cpp" "src/*.S")
+file(GLOB SOURCES "src/*.cpp" "src/*.S" "src/*.c")
 add_executable(${PROJECT_NAME}.elf ${SOURCES})
 
 target_include_directories(${PROJECT_NAME}.elf PRIVATE

@@ -6,7 +6,8 @@ namespace {
     reg32 exti_base{ (reg32) 0x40010400 };
     reg32 interrupt_mask_register_1{ exti_base };
     reg32 exti_rising_trigger_reg_1{ exti_base + 0x2 };
-    reg32 exti_falling_trigger_reg_1{ exti_base + 0x3};
+    reg32 exti_falling_trigger_reg_1{ exti_base + 0x3 };
+    reg32 exti_pending_register_1{ exti_base + 0x5 };
     reg32 nvic_set_enable_base{ (reg32) 0xe000e100 };
     reg32 nvic_priority_register_base{ (reg32) 0xe000e400 };
 
@@ -58,5 +59,9 @@ namespace Interrupts {
             // pin number out of range, something has gone terribly wrong
         }
         
+    }
+
+    void clear_gpio_interrupt_flag(int pin_number) noexcept {
+        *exti_pending_register_1 |= (1 << pin_number);
     }
 }

@@ -32,6 +32,34 @@ SECTIONS
      *(.text*)
      . = ALIGN(4);
    } >FLASH
+
+   /* C++ static constructors and destructors */
+  .preinit_array : {
+    . = ALIGN(4);
+    _spreinit_array = .;
+    *(.preinit_array)
+     *(.preinit_array*)
+    _epreinit_array = .;
+    . = ALIGN(4);
+  } >FLASH
+  
+  .init_array : {
+    . = ALIGN(4);
+    _sinit_array = .;
+    KEEP (*(.init_array))
+    KEEP (*(.init_array*))
+    _einit_array = .;
+    . = ALIGN(4);
+  } >FLASH
+  
+  .fini_array : {
+    . = ALIGN(4);
+    _sfini_array = .;
+    KEEP (*(.fini_array))
+    KEEP (*(.fini_array*))
+    _efini_array = .;
+    . = ALIGN(4);
+  } >FLASH
    
    /* The 'rodata' section contains read-only data,
     * constants, strings, information that won't change. */
@@ -41,6 +69,8 @@ SECTIONS
      *(.rodata*)
      . = ALIGN(4);
    } >FLASH
+
+
    
     /* The 'data' section is space set aside in RAM for
     * things like variables, which can change. */
@@ -55,29 +85,7 @@ SECTIONS
      . = ALIGN(4);
    } >RAM
    
-   /* C++ static constructors and destructors */
-	.preinit_array : {
-		. = ALIGN(4);
-		__preinit_array_start = .;
-		KEEP (*(.preinit_array))
-		__preinit_array_end = .;
-	} >FLASH
-  
-	.init_array : {
-		. = ALIGN(4);
-		__init_array_start = .;
-		KEEP (*(SORT(.init_array.*)))
-		KEEP (*(.init_array))
-		__init_array_end = .;
-	} >FLASH
-  
-	.fini_array : {
-		. = ALIGN(4);
-		__fini_array_start = .;
-		KEEP (*(.fini_array))
-		KEEP (*(SORT(.fini_array.*)))
-		__fini_array_end = .;
-	} >FLASH
+
    
   /* The 'bss' section is similar to the 'data' section,
   * but its space is initialized to all 0s at the

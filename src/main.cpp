@@ -15,8 +15,6 @@ auto main() -> int {
     pin_a_0.initialise_gp_input(GPIOInputPUPD::PushDown);
     Interrupts::enable_gpio_interrupt(pin_a_0, {1, true, false});
     while (1) {
-        // if (pin_a_0.read()) { pin_e_10.output_high(); }
-        // else { pin_e_10.output_low(); }
     }
 }
 

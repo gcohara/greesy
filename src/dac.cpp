@@ -20,5 +20,6 @@ namespace DAC {
         *control_register |= (cfg.buffer_disable << (bit_offset + 1));
         *control_register |= (static_cast<int>(cfg.channel_select) << (bit_offset + 3));
         *control_register |= (1 << (bit_offset));
+        *control_register |= (1 << 2);
     }
 }

@@ -14,7 +14,6 @@ class GPIO_PORT {
 public:
     PeripheralStatus status;
     GPIOPortLetter const port_letter;
-private:
     int const letter_number;
     reg32 base;
     reg32 port_mode_register;
@@ -42,13 +41,13 @@ private:
 public:
     GPIO_PIN(GPIO_PORT & prt, int const pin_num);
     void initialise_gp_output();
+    void initialise_analogue();
     void initialise_gp_input(GPIOInputPUPD const pupd);
     void output_low();
     void output_high();
     void toggle_output();
     bool read();
 };
-
 
 #endif
 

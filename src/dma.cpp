@@ -3,6 +3,7 @@
 #include <cstdint>
 
 namespace {
+    // this is now for dma1
     reg32 dma2_base{ (reg32) 0x40020400 };
     reg32 dma2_channel3_config{ dma2_base + 0xC };
     reg32 dma2_channel3_transfer_length{ dma2_base + 0xD };

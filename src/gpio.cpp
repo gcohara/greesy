@@ -69,3 +69,7 @@ void GPIO_PIN::toggle_output() {
 bool GPIO_PIN::read() {
     return port.read_input_pin(*this);
 }
+
+void GPIO_PIN::initialise_analogue() {
+    *port.port_mode_register |= (3 << (2 * pin_number));
+}

@@ -17,7 +17,7 @@ namespace BasicTimers {
         *tim6_control1 |= (cfg.onepulse << 3);
         *tim6_control2 |= (static_cast<int>(cfg.master_mode) << 4);
         *tim6_prescaler = cfg.psc_val;
-        *tim6_autoreload |= cfg.autorel_val;
+        *tim6_autoreload = cfg.autorel_val;
         // enable the timer
         *tim6_control1 |= 1;
     }

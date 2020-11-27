@@ -8,7 +8,7 @@ namespace {
     
 }
 
-namespace Rcc {
+namespace RCC {
     void enable_apb2_clock(APB2Peripheral peripheral) noexcept {
         auto const peripheral_number{ static_cast<int>(peripheral) };
         *apb2_clock_enable_register |= (1 << peripheral_number);
@@ -17,6 +17,11 @@ namespace Rcc {
     void enable_apb1_clock(APB1Peripheral peripheral) noexcept {
         auto const peripheral_number{ static_cast<int>(peripheral) };
         *apb1_clock_enable_register |= (1 << peripheral_number);
+    }
+
+    void enable_ahb_clock(AHBPeripheral peripheral) noexcept {
+        auto const peripheral_number{ static_cast<int>(peripheral)};
+        *ahb_clock_enable_register |= (1 << peripheral_number);
     }
 
     void enable_gpio_port_clock(GPIO_PORT port) noexcept {

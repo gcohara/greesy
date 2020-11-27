@@ -41,7 +41,7 @@ namespace {
 
 namespace Interrupts {
     void enable_gpio_interrupt(GPIO_PIN const& pin, INTERRUPT_CONFIG const& config) noexcept {
-        Rcc::enable_apb2_clock(Rcc::APB2Peripheral::SysConfig);
+        RCC::enable_apb2_clock(RCC::APB2Peripheral::SysConfig);
         SysConfig::gpio_interrupt_port_select(pin);
         // set whether it's active on rise fall or both
         exti_enable_interrupt_lower_32(pin.pin_number, config);

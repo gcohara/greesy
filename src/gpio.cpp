@@ -11,7 +11,7 @@ GPIO_PORT::GPIO_PORT(GPIOPortLetter const pl):
     input_data_register{ base + 0x4 },
     output_data_register{ base + 0x5 }    
 {
-    Rcc::enable_gpio_port_clock(*this);
+    RCC::enable_gpio_port_clock(*this);
     status = PeripheralStatus::ON;
 }
 

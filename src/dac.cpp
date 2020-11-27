@@ -5,13 +5,13 @@ namespace {
     reg32 dac_base{ (reg32) 0x40007400 };
     reg32 control_register{ dac_base };
     
-    void enable_clock(Dac::DacNumber dacnum) noexcept {
-        if (dacnum == Dac::DacNumber::Dac1) { Rcc::enable_apb1_clock(Rcc::APB1Peripheral::DAC1); }
-        else { Rcc::enable_apb1_clock(Rcc::APB1Peripheral::DAC2); }
+    void enable_clock(DAC::DACNumber dacnum) noexcept {
+        if (dacnum == DAC::DACNumber::DAC1) { RCC::enable_apb1_clock(RCC::APB1Peripheral::DAC1); }
+        else { RCC::enable_apb1_clock(RCC::APB1Peripheral::DAC2); }
     }
 }
 
-namespace Dac {
+namespace DAC {
     void enable_dac(Config const& cfg) noexcept {
         enable_clock(cfg.dac_num);
         auto const bit_offset{ 16 * static_cast<int>(cfg.dac_num) };

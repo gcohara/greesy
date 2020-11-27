@@ -7,7 +7,7 @@ namespace {
     reg32 sysconfig_exti_interrupt_register_base{ (reg32) 0x40010408 };
     
     void enable_sysconfig_clock() noexcept {
-        Rcc::enable_apb2_clock(Rcc::APB2Peripheral::SysConfig);
+        RCC::enable_apb2_clock(RCC::APB2Peripheral::SysConfig);
         sysconfig_status = PeripheralStatus::ON;
     }
 }

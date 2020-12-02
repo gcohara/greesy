@@ -77,7 +77,6 @@ void inline tim6_handler() noexcept {
     // many problems with this function, relies on overflow of 8bit int
     // direct register access too
     float_t static raw_index{ 0 };
-    std::uint8_t static j = 0;
     
     if (static_cast<std::size_t>(raw_index) >= sine_sample_length) {
         raw_index -= sine_sample_length;
@@ -86,7 +85,6 @@ void inline tim6_handler() noexcept {
     float_t fractional_part{ std::modf(raw_index, &integer_part) };
     
     std::size_t i = static_cast<std::size_t>(integer_part);
-    
 
     auto output {
         fractional_part * static_cast<float_t>(sine_wave[(i + 1) % 256] - sine_wave[i])
@@ -94,12 +92,7 @@ void inline tim6_handler() noexcept {
     };
     
     (* (uint32_t *) 0x40007408) = static_cast<std::uint32_t>(output);
-    // if ((unsigned) raw_index > sine_sample_length - 1) {
-    //     raw_index-= sine_sample_length;
-    // }
     raw_index += wavetable_increment;
-    j++;
-    // raw_index++;
 }
 
 

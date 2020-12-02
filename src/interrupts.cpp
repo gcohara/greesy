@@ -11,10 +11,9 @@ namespace {
     reg32 nvic_set_enable_base{ (reg32) 0xe000e100 };
     reg32 nvic_priority_register_base{ (reg32) 0xe000e400 };
 
-    void nvic_interrupt_enable(int interrupt_number, int priority) noexcept {
-        if (priority < 0 || priority >= 256) {
-            // error handling goes here
-        }
+    void
+    nvic_interrupt_enable
+    (int interrupt_number, Interrupts::InterruptPriority priority) noexcept {
         if (interrupt_number < 0 || interrupt_number > 84) {
             // error handling
         }
@@ -25,7 +24,9 @@ namespace {
     }
     
     // only works for first 32 line numbers
-    void exti_enable_interrupt_lower_32(int line_number, INTERRUPT_CONFIG const& config) noexcept {
+    void
+    exti_enable_interrupt_lower_32
+    (int line_number, Interrupts::GPIO_INTERRUPT_CONFIG const& config) noexcept {
         if (line_number < 0 || line_number > 31) {
             // error handling goes here
         }
@@ -40,7 +41,7 @@ namespace {
 }
 
 namespace Interrupts {
-    void enable_gpio_interrupt(GPIO_PIN const& pin, INTERRUPT_CONFIG const& config) noexcept {
+    void enable_gpio_interrupt(GPIO_PIN const& pin, GPIO_INTERRUPT_CONFIG const& config) noexcept {
         RCC::enable_apb2_clock(RCC::APB2Peripheral::SysConfig);
         SysConfig::gpio_interrupt_port_select(pin);
         // set whether it's active on rise fall or both
@@ -59,6 +60,10 @@ namespace Interrupts {
             // pin number out of range, something has gone terribly wrong
         }
         
+    }
+
+    void enable_timer6_interrupt(InterruptPriority const priority) noexcept {
+        nvic_interrupt_enable(54, priority);
     }
 
     void clear_gpio_interrupt_flag(int pin_number) noexcept {

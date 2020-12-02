@@ -25,6 +25,8 @@ namespace DMA {
         // Set memory size and peripheral size to 16 bits
         *dma2_channel3_config |= (1 << 10);
         *dma2_channel3_config |= (1 << 8);
+        // Set priority to very high
+        *dma2_channel3_config |= (3 << 12);
         // Enabled memory increment mode
         *dma2_channel3_config |= (1 << 7);
         // Enable circular mode

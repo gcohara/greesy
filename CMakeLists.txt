@@ -15,6 +15,7 @@ target_include_directories(${PROJECT_NAME}.elf PRIVATE
 
 target_compile_options(${PROJECT_NAME}.elf PRIVATE
   ${MCU_OPTIONS}
+  -std=gnu++2a
   -fno-exceptions
   --specs=nosys.specs
   -Wall
@@ -27,7 +28,12 @@ target_link_options(${PROJECT_NAME}.elf PRIVATE
   -Wall
   --specs=nosys.specs
   -nostdlib
-  -lgcc
+  )
+
+# Using this appends the library flag to the end of the command
+target_link_libraries(${PROJECT_NAME}.elf
+  gcc
+  m
   )
 
 # So that a binary file is generated from the ELF file

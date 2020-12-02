@@ -9,9 +9,11 @@ namespace DAC {
         ChannelSelection channel_select;
         bool buffer_disable;
         bool DMA_enable;
+        bool trigger_enable;
     };
     
     void enable_dac(Config const& cfg) noexcept;
+    // void
 }
 
 #endif

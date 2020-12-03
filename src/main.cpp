@@ -48,6 +48,7 @@ WaveSample constexpr static sine_wave{
 // global variables
 std::float_t wavetable_increment{ 1.301f };
 std::float_t amplitude{ 1.0f };
+std::size_t envelope_index{ 0 };
 
 auto main() -> int {
     RCC::set_to_72Mhz();        // gotta go fast

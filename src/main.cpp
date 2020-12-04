@@ -123,13 +123,16 @@ auto main() -> int {
     }
 }
 
+bool static trigger_flag{ false };
+std::uint16_t constexpr midpoint{ 2048 };
+std::uint16_t constexpr delta{ 10 };
+
 void inline tim7_handler() noexcept {
     amplitude = decay_envelope[envelope_index];
     if (envelope_index < envelope_length - 1) {
         envelope_index++;
     }
 }
-
 
 
 void inline tim6_handler() noexcept {
@@ -157,6 +160,13 @@ void inline tim6_handler() noexcept {
     //     fractional_part_env * static_cast<float_t>(decay_envelope[(j + 1) % envelope_length] - decay_envelope[j])
     //     + static_cast<float_t>(decay_envelope[j])
     // };
+
+    if (trigger_flag && output <= (midpoint + delta) && output >= (midpoint - delta)) {
+        trigger_flag = false;
+        envelope_index = 0;
+        amplitude = decay_envelope[envelope_index];
+    }
+    
     
     // apply envelope
     output = (output - 2048.0f) * amplitude;
@@ -175,18 +185,19 @@ extern "C" {
         led.toggle_output();
         // if (wavetable_increment > 3) { wavetable_increment = 0; }
         // else { wavetable_increment++; }
-        envelope_index = 0;
-        // this will hopefully stop the popping 
-        if (amplitude < 0.0001f) {
-            wavetable_index = 0;
-            envelope_index = 0;
-        }
-            // amplitude = decay_envelope[envelope_index];
+        // envelope_index = 0;
+        // // this will hopefully stop the popping 
+        // if (amplitude < 0.0001f) {
+        //     wavetable_index = 0;
+        //     envelope_index = 0;
+        // }
+        //     // amplitude = decay_envelope[envelope_index];
  
-        else {
-            envelope_index = 0;
-            amplitude = decay_envelope[envelope_index];
-        }
+        // else {
+        //     envelope_index = 0;
+        //     amplitude = decay_envelope[envelope_index];
+        // }
+        trigger_flag = true;
     }
     void TIM6_DAC_IRQHandler() noexcept {
         // BasicTimers::clear_interrupt_flag(BasicTimers::TimerNumber::Tim6);
@@ -194,7 +205,6 @@ extern "C" {
         tim6_handler();
     }
     void TIM7_IRQHandler() noexcept {
-        
         tim7_handler();
         envelope_timer.clear_interrupt_flag();
     }

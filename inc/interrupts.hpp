@@ -3,9 +3,7 @@
 
 #include "main.hpp"
 #include "gpio.hpp"
-#include "timers.hpp"
 #include <cstdint>
-
 
 
 namespace Interrupts {
@@ -20,6 +18,7 @@ namespace Interrupts {
     void enable_gpio_interrupt(GPIO_PIN const& pin, GPIO_INTERRUPT_CONFIG const& config) noexcept;
     void clear_gpio_interrupt_flag(int pin_number) noexcept;
     void enable_timer6_interrupt (InterruptPriority const priority) noexcept;
+    void enable_timer7_interrupt(InterruptPriority const priority) noexcept;
 }
 
 #endif

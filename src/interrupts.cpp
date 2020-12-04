@@ -66,6 +66,10 @@ namespace Interrupts {
         nvic_interrupt_enable(54, priority);
     }
 
+    void enable_timer7_interrupt(InterruptPriority const priority) noexcept {
+        nvic_interrupt_enable(55, priority);
+    }
+    
     void clear_gpio_interrupt_flag(int pin_number) noexcept {
         *exti_pending_register_1 |= (1 << pin_number);
     }

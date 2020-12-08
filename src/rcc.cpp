@@ -54,15 +54,5 @@ namespace RCC {
         *rcc_clock_control_register |= (1 << 24);
         *rcc_clock_config_register |= 2;
     }
-    
-    // void set_to_72Mhz() noexcept {
-    //     // set PLL to multiply by 9
-    //     *rcc_clock_config_register |= (7 << 18);
-    //     // hsi source, no prediv
-    //     *rcc_clock_config_register |= (1 << 15);
-    //     // pll enable goes last
-    //     *rcc_clock_control_register |= (1 << 24);
-    //     *rcc_clock_config_register |= 2;
-    // }
 }
 

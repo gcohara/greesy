@@ -2,6 +2,10 @@
 #include "../inc/rcc.hpp"
 #include "../inc/sysconfig.hpp"
 
+#include <cstddef>
+
+
+
 namespace {
     reg32 exti_base{ (reg32) 0x40010400 };
     reg32 interrupt_mask_register_1{ exti_base };
@@ -14,6 +18,7 @@ namespace {
     void
     nvic_interrupt_enable
     (int interrupt_number, Interrupts::InterruptPriority priority) noexcept {
+        // a way around this could be to create a constexpr function that returns
         if (interrupt_number < 0 || interrupt_number > 84) {
             // error handling
         }

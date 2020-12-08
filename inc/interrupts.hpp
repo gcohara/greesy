@@ -8,6 +8,7 @@
 
 namespace Interrupts {
     using InterruptPriority = std::uint8_t;
+    using LineNumber = RestrictedInteger<0, 81>;
     
     struct GPIO_INTERRUPT_CONFIG {
         InterruptPriority const priority;

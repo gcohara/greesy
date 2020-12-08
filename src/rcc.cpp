@@ -4,6 +4,7 @@ namespace {
     reg32 rcc_base{ (reg32) 0x40021000 };
     reg32 rcc_clock_control_register{ rcc_base };
     reg32 rcc_clock_config_register{ rcc_base + 0x1 };
+    reg32 rcc_clock_config_register2{ rcc_base + 0xB };
     reg32 ahb_clock_enable_register{ rcc_base + 0x5 };
     reg32 apb2_clock_enable_register{ rcc_base + 0x6 };
     reg32 apb1_clock_enable_register{ rcc_base + 0x7 };
@@ -31,14 +32,37 @@ namespace RCC {
         *ahb_clock_enable_register |= (1 << (17 + port_number));
     }
 
+    bool hse_ready() {
+        return (*rcc_clock_control_register) & (1 << 17);
+    }
+    
+    // this doesn't work dur dur dur
     void set_to_72Mhz() noexcept {
+        // set flash latency!!
+        (* (reg32) 0x40022000) |= 2;
+        // enable HSE clock
+        *rcc_clock_control_register |= (1 << 16);
+        while(!hse_ready()) {
+            
+        }
         // set PLL to multiply by 9
-        *rcc_clock_config_register |= (7 << 18);
-        // hsi source, no prediv
-        *rcc_clock_config_register |= (1 << 15);
+        *rcc_clock_config_register |= (15 << 18);
+        // hse source,  prediv by 12
+        *rcc_clock_config_register |= (1 << 16);
+        *rcc_clock_config_register2 |= 0;
         // pll enable goes last
         *rcc_clock_control_register |= (1 << 24);
         *rcc_clock_config_register |= 2;
     }
+    
+    // void set_to_72Mhz() noexcept {
+    //     // set PLL to multiply by 9
+    //     *rcc_clock_config_register |= (7 << 18);
+    //     // hsi source, no prediv
+    //     *rcc_clock_config_register |= (1 << 15);
+    //     // pll enable goes last
+    //     *rcc_clock_control_register |= (1 << 24);
+    //     *rcc_clock_config_register |= 2;
+    // }
 }
 

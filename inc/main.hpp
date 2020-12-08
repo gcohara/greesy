@@ -5,7 +5,7 @@
 #include <cstdint>
 
 enum class PeripheralStatus { ON, OFF };
-using reg32 = std::uint32_t * const;
+using reg32 = std::uint32_t volatile * const;
 
 template <std::size_t MIN, std::size_t MAX>
 struct RestrictedInteger {

@@ -23,7 +23,7 @@ BasicTimers::BasicTimer<BasicTimers::TimerNumber::Tim7> static envelope_timer;
 // global constants
 // note that apb1 domain can't go higher than this, so while clock speed is
 // actually 72mhz we set it to this
-std::size_t constexpr clock_speed{ 36'000'000 };
+std::size_t constexpr clock_speed{ 72'000'000 };
 std::size_t constexpr desired_sample_rate{ 44'100 };
 std::size_t constexpr autoreload_value{ clock_speed / desired_sample_rate };
 std::size_t constexpr envelope_length{ 128 };
@@ -58,9 +58,9 @@ WaveSample constexpr static sine_wave{
 std::float_t volatile amplitude{ 1.0f };
 std::size_t volatile envelope_index{ 0 };
 // std::float_t envelope_increment{ 0.01f };
-std::float_t wavetable_index{ 0.0f };
-std::float_t freq{ 100.0f };
-std::float_t wavetable_increment{ freq / base_frequency };
+std::float_t volatile wavetable_index{ 0.0f };
+std::float_t volatile freq{ 100.0f };
+std::float_t volatile wavetable_increment{ freq / base_frequency };
 
 // std::float_t volatile decay_envelope[envelope_length] {
 //     1.000000,0.98066,0.96169,0.94309,0.92485,0.90696,0.88942,0.87222,0.85535,
@@ -91,7 +91,7 @@ std::float_t wavetable_increment{ freq / base_frequency };
 //     0.00773,0.00758,0.00743,0.00729,0.00714,0.00701,0
 // };
 
-std::float_t decay_envelope[envelope_length];
+std::float_t volatile decay_envelope[envelope_length];
 
 auto main() -> int {
     for (auto& x : decay_envelope) {
@@ -135,18 +135,16 @@ auto main() -> int {
 
 
 // These need moving, ideally spinning off into a synth.cpp module
-bool static trigger_flag{ false };
+bool static volatile trigger_flag{ false };
 std::uint16_t constexpr midpoint{ 2048 };
 std::uint16_t constexpr delta{ 100 };
 
-std::uint16_t static debug_counter{ 0 };
 
 void play_frequency(std::float_t freq) {
     wavetable_increment = freq / base_frequency;
 }
 
 void inline tim7_handler() noexcept {
-    debug_counter = 0;
     amplitude = decay_envelope[envelope_index];
     if (envelope_index < envelope_length - 1) {
         envelope_index++;
@@ -156,7 +154,6 @@ void inline tim7_handler() noexcept {
 
 void inline tim6_handler() noexcept {
     // declarations at the top!
-    debug_counter++;
     if (static_cast<std::size_t>(wavetable_index) >= sine_sample_length) {
         wavetable_index -= sine_sample_length;
         // retrigger envelope here toox
@@ -205,28 +202,14 @@ extern "C" {
     void EXTI0_IRQHandler() noexcept {
         Interrupts::clear_gpio_interrupt_flag(0);
         led.toggle_output();
-        // if (wavetable_increment > 3) { wavetable_increment = 0; }
-        // else { wavetable_increment++; }
-        // envelope_index = 0;
-        // // this will hopefully stop the popping 
-                  // if (amplitude < 0.0001f) {
-        //     wavetable_index = 0;
-        //     envelope_index = 0;
-        // }
-        //     // amplitude = decay_envelope[envelope_index];
-        
-        // else {
-        //     envelope_index = 0;
-        //     amplitude = decay_envelope[envelope_index];
-        // }
         freq += 100;
         play_frequency(freq);
         trigger_flag = true;
     }
     void TIM6_DAC_IRQHandler() noexcept {
-        // BasicTimers::clear_interrupt_flag(BasicTimers::TimerNumber::Tim6);
         timer_6.clear_interrupt_flag();
         tim6_handler();
+        led.toggle_output();
 
     }
     void TIM7_IRQHandler() noexcept {

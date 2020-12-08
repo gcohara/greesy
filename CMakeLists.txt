@@ -20,7 +20,8 @@ target_compile_options(${PROJECT_NAME}.elf PRIVATE
   --specs=nosys.specs
   -Wall
   -Wunused
-  -g
+  # -g
+  -O3
   )
 
 target_link_options(${PROJECT_NAME}.elf PRIVATE

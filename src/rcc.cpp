@@ -40,18 +40,23 @@ namespace RCC {
     void set_to_72Mhz() noexcept {
         // set flash latency!!
         (* (reg32) 0x40022000) |= 2;
-        // enable HSE clock
+        // enable HSE clock and set as sysclock
         *rcc_clock_control_register |= (1 << 16);
-        while(!hse_ready()) {
-            
-        }
-        // set PLL to multiply by 9
-        *rcc_clock_config_register |= (15 << 18);
-        // hse source,  prediv by 12
+        while(!hse_ready()) {}
+        *rcc_clock_config_register |= 1;
+        // hse source to PLL, no prediv
         *rcc_clock_config_register |= (1 << 16);
-        *rcc_clock_config_register2 |= 0;
+        *rcc_clock_config_register2 &= (~0 << 4);
+        // set PLL to multiply by 9
+        *rcc_clock_config_register |= (7 << 18);
+        
+        // divide apb1 by two
+        *rcc_clock_config_register |= (4 << 11);
+        
         // pll enable goes last
         *rcc_clock_control_register |= (1 << 24);
+        
+        *rcc_clock_config_register &= (~0 << 2);
         *rcc_clock_config_register |= 2;
     }
 }

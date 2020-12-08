@@ -3,6 +3,11 @@
 
 #include "../main.hpp"
 
+/* TODO:
+   Spin this off into templated classes, and clean up all the methods in the src
+   file
+*/
+
 reg32 GPIOA_BASE{ (reg32) 0x48000000 };
 
 enum class GPIOPortLetter { A, B, C, D, E, F, };

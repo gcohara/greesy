@@ -1,4 +1,5 @@
 #include "../../inc/peripherals/rcc.hpp"
+#include "../../inc/peripherals/flash.hpp"
 
 namespace {
     reg32 rcc_base{ (reg32) 0x40021000 };
@@ -31,32 +32,24 @@ namespace RCC {
         auto const port_number{ static_cast<int>(port.port_letter) };
         *ahb_clock_enable_register |= (1 << (17 + port_number));
     }
-
-    bool hse_ready() {
-        return (*rcc_clock_control_register) & (1 << 17);
-    }
     
-    // this doesn't work dur dur dur
     void set_to_72Mhz() noexcept {
-        // set flash latency!!
-        (* (reg32) 0x40022000) |= 2;
-        // enable HSE clock and set as sysclock
+        // set flash latency
+        Flash::set_access_latency(Flash::AccessLatency::Two);
+        // enable HSE clock and then set as sysclock
         *rcc_clock_control_register |= (1 << 16);
-        while(!hse_ready()) {}
         *rcc_clock_config_register |= 1;
-        // hse source to PLL, no prediv
+        // set the PLL source as  HSE/PREDIV
         *rcc_clock_config_register |= (1 << 16);
-        *rcc_clock_config_register2 &= (~0 << 4);
-        // set PLL to multiply by 9
+        // ensure PREDIV == 1
+        *rcc_clock_config_register2 &= (~0u << 4);
+        // set PLL to multiply by 9 => 72MHz
         *rcc_clock_config_register |= (7 << 18);
-        
-        // divide apb1 by two
+        // divide by two for APB1 => 32Mhz (and timers go at 72MHz)
         *rcc_clock_config_register |= (4 << 11);
-        
-        // pll enable goes last
+        // turn PLL on, then set it as system clock
         *rcc_clock_control_register |= (1 << 24);
-        
-        *rcc_clock_config_register &= (~0 << 2);
+        *rcc_clock_config_register &= (~0u << 2);
         *rcc_clock_config_register |= 2;
     }
 }

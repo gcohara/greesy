@@ -6,6 +6,10 @@
 #include "rcc.hpp"
 #include <cstdint>
 
+/* TODO:
+   Complete that enable interrupt method.
+*/
+
 namespace BasicTimers {
     enum class TimerNumber { Tim6, Tim7 };
     enum class MasterModeSelection { Reset, Enable, Update };

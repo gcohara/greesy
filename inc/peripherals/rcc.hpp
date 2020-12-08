@@ -14,7 +14,6 @@ namespace RCC {
     void enable_ahb_clock(AHBPeripheral peripheral) noexcept;
     void enable_gpio_port_clock(GPIO_PORT port) noexcept;
     void set_to_72Mhz() noexcept;
-    void set_to_36Mhz() noexcept;
 }
 
 #endif

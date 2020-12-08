@@ -5,6 +5,10 @@
 #include "gpio.hpp"
 #include <cstdint>
 
+/* TODO:
+   Make this more generic so we don't have to have  different functions
+   for each timer interrupt etc
+*/
 
 namespace Interrupts {
     using InterruptPriority = std::uint8_t;

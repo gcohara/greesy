@@ -1,4 +1,4 @@
-#include "../inc/rcc.hpp"
+#include "../../inc/peripherals/rcc.hpp"
 
 namespace {
     reg32 rcc_base{ (reg32) 0x40021000 };

@@ -1,5 +1,5 @@
-#include "../inc/sysconfig.hpp"
-#include "../inc/rcc.hpp"
+#include "../../inc/peripherals/sysconfig.hpp"
+#include "../../inc/peripherals/rcc.hpp"
 
 namespace {
     PeripheralStatus static sysconfig_status{ PeripheralStatus::OFF };

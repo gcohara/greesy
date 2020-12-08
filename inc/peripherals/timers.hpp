@@ -2,7 +2,7 @@
 #define TIMERS_HPP
 
 #include "interrupts.hpp"
-#include "main.hpp"
+#include "../main.hpp"
 #include "rcc.hpp"
 #include <cstdint>
 

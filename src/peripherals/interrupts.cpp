@@ -1,6 +1,6 @@
-#include "../inc/interrupts.hpp"
-#include "../inc/rcc.hpp"
-#include "../inc/sysconfig.hpp"
+#include "../../inc/peripherals/interrupts.hpp"
+#include "../../inc/peripherals/rcc.hpp"
+#include "../../inc/peripherals/sysconfig.hpp"
 
 #include <cstddef>
 

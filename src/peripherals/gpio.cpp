@@ -1,5 +1,5 @@
-#include "../inc/gpio.hpp"
-#include "../inc/rcc.hpp"
+#include "../../inc/peripherals/gpio.hpp"
+#include "../../inc/peripherals/rcc.hpp"
 
 GPIO_PORT::GPIO_PORT(GPIOPortLetter const pl):
     port_letter{ pl },

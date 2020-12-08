@@ -1,7 +1,7 @@
 #ifndef GPIO_HPP
 #define GPIO_HPP
 
-#include "main.hpp"
+#include "../main.hpp"
 
 reg32 GPIOA_BASE{ (reg32) 0x48000000 };
 

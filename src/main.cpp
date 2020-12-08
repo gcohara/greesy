@@ -1,12 +1,10 @@
-
 #include "../inc/main.hpp"
-#include "../inc/gpio.hpp"
-#include "../inc/sysconfig.hpp"
-#include "../inc/interrupts.hpp"
-#include "../inc/timers.hpp"
-#include "../inc/dac.hpp"
-#include "../inc/dma.hpp"
-#include "../inc/rcc.hpp"
+#include "../inc/peripherals/gpio.hpp"
+#include "../inc/peripherals/sysconfig.hpp"
+#include "../inc/peripherals/interrupts.hpp"
+#include "../inc/peripherals/timers.hpp"
+#include "../inc/peripherals/dac.hpp"
+#include "../inc/peripherals/rcc.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <array>
@@ -101,7 +99,7 @@ auto main() -> int {
     RCC::set_to_72Mhz();        // gotta go fast
     // Define our configs for the peripherals we will be using
     DAC::Config constexpr dac1_cfg{
-        .dac_num{ DAC::DACNumber::DAC1 },
+        .chan_num{ DAC::ChannelSelect::Channel1 },
         .buffer_disable{ true },
         .trigger_enable{ false },
     };

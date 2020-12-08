@@ -201,7 +201,6 @@ void inline tim6_handler() noexcept {
 extern "C" {
     void EXTI0_IRQHandler() noexcept {
         Interrupts::clear_gpio_interrupt_flag(0);
-        led.toggle_output();
         freq += 100;
         play_frequency(freq);
         trigger_flag = true;
@@ -209,8 +208,6 @@ extern "C" {
     void TIM6_DAC_IRQHandler() noexcept {
         timer_6.clear_interrupt_flag();
         tim6_handler();
-        led.toggle_output();
-
     }
     void TIM7_IRQHandler() noexcept {
         envelope_timer.clear_interrupt_flag();

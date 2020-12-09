@@ -4,7 +4,7 @@ project(greesyn LANGUAGES C CXX ASM)
 
 # MCU specific
 set(LINKER_SCRIPT "../ld/stm32f3discovery.ld")
-set(MCU_OPTIONS -mcpu=cortex-m4 -mthumb)
+set(MCU_OPTIONS -mcpu=cortex-m4 -mthumb -mfloat-abi=hard)
 
 file(GLOB SOURCES "src/*.cpp" "src/*.S" "src/*.c" "src/peripherals/*.cpp")
 add_executable(${PROJECT_NAME}.elf ${SOURCES})
@@ -18,11 +18,12 @@ target_compile_options(${PROJECT_NAME}.elf PRIVATE
   ${MCU_OPTIONS}
   -std=gnu++2a
   -fno-exceptions
+  -fsingle-precision-constant
   --specs=nosys.specs
   -Wall
   -Wunused
-  # -g
-  -O3
+  -g
+  # -O3
   )
 
 target_link_options(${PROJECT_NAME}.elf PRIVATE

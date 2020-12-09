@@ -7,8 +7,7 @@
 namespace Synth {
     void play_next_sample() noexcept;
     void advance_envelope() noexcept;
-    void change_frequency(std::float_t freq) noexcept;
-    void trigger_envelope() noexcept;
+    void new_note(std::float_t new_freq) noexcept;
     void set_output_register() noexcept;
 }
 

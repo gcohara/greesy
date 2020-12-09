@@ -31,7 +31,7 @@ std::float_t constexpr extern base_frequency {
 
 
 auto main() -> int {
-    RCC::set_to_72Mhz();        // gotta go fast
+    RCC::set_to_72Mhz();
     // Define our configs for the peripherals we will be using
     DAC::Config constexpr dac1_cfg{
         .chan_num{ DAC::ChannelSelect::Channel1 },
@@ -62,11 +62,6 @@ auto main() -> int {
     
     while (1);
 }
-
-
-
-
-
 
 extern "C" {
     void EXTI0_IRQHandler() noexcept {

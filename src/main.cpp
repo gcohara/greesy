@@ -21,13 +21,6 @@ GPIO_PIN static audio_out{ portA, 4 };
 BasicTimers::BasicTimer<BasicTimers::TimerNumber::Tim6> static timer_6;
 BasicTimers::BasicTimer<BasicTimers::TimerNumber::Tim7> static envelope_timer;
 
-// global constants
-std::size_t constexpr clock_speed{ 72'000'000 };
-std::size_t constexpr desired_sample_rate{ 44'100 };
-std::size_t constexpr autoreload_value{ clock_speed / desired_sample_rate };
-std::float_t constexpr extern base_frequency {
-                           static_cast<float>(desired_sample_rate) / sine_sample_length };
-
 
 
 auto main() -> int {
@@ -44,7 +37,7 @@ auto main() -> int {
         .interrupt{ true }
     };
     BasicTimers::Config constexpr envelope_timer_config{
-        .psc_val{ 500 },
+        .psc_val{ envelope_prescale },
         .autorel_val{ autoreload_value },
         .interrupt{ true }
     };
@@ -66,8 +59,6 @@ auto main() -> int {
 extern "C" {
     void EXTI0_IRQHandler() noexcept {
         Interrupts::clear_gpio_interrupt_flag(0);
-        // freq += 100;
-        // play_frequency(freq);
         Synth::new_note(200);
     }
     void TIM6_DAC_IRQHandler() noexcept {

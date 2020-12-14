@@ -55,3 +55,4 @@ add_custom_command(
   USES_TERMINAL
   COMMAND st-flash write ${PROJECT_NAME}.bin 0x08000000
   )
+

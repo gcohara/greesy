@@ -3,7 +3,7 @@
 #include "../inc/tables.hpp"
 #include <cmath>
 
-std::float_t extern base_frequency;
+std::float_t const extern base_frequency;
 
 namespace {
     reg32 output_register{ nullptr };
@@ -84,5 +84,9 @@ namespace Synth {
         if (static_cast<std::size_t>(wavetable_index) >= sine_sample_length) {
             wavetable_index -= sine_sample_length;
         }
+    }
+
+    int add_function(int a, int b) {
+        return a + b;
     }
 }

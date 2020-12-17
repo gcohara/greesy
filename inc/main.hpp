@@ -16,6 +16,7 @@ std::size_t constexpr clock_speed{ 72'000'000 };
 std::size_t constexpr desired_sample_rate{ 44'100 };
 std::size_t constexpr autoreload_value{ clock_speed / desired_sample_rate };
 std::size_t constexpr envelope_prescale{ 500 };
+std::size_t constexpr midi_buffer_size{ 1024 };
 std::float_t constexpr base_frequency {
                            static_cast<float>(desired_sample_rate)
                            /

@@ -7,6 +7,7 @@
 #include "../inc/peripherals/rcc.hpp"
 #include "../inc/tables.hpp"
 #include "../inc/synth.hpp"
+#include "../inc/midi.hpp"
 #include "../inc/peripherals/usart.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -21,7 +22,7 @@ GPIO_PIN static led{ portE, 10 };
 GPIO_PIN static push_button{ portA, 0 };
 GPIO_PIN static audio_out{ portA, 4 };
 GPIO_PIN static midi_input_pin{ portB, 7 };
-CircularBuffer<std::uint8_t, 1024> static midi_buffer;
+CircularBuffer<std::uint8_t, midi_buffer_size> static midi_buffer;
 BasicTimers::BasicTimer<BasicTimers::TimerNumber::Tim6> static timer_6;
 BasicTimers::BasicTimer<BasicTimers::TimerNumber::Tim7> static envelope_timer;
 USART::USART<USART::USARTNumber::USART1> static midi_input;
@@ -70,7 +71,16 @@ auto main() -> int {
     Interrupts::enable_timer7_interrupt(0);
     midi_input.enable(midi_serial_config);
     Interrupts::enable_usart1_interrupt(2);
-    while (1);
+    
+    while (1) {
+        auto [instruction, data] { MIDI::parse_midi_data(midi_buffer) };
+        if (instruction == MIDI::InstructionType::NoteOn) {
+            Synth::new_note(data.note_data.note_number);
+        }
+        else if (instruction == MIDI::InstructionType::NoteOff) {
+            Synth::stop_note();
+        }
+    }
 }
 
 extern "C" {

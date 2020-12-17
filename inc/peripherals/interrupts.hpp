@@ -23,6 +23,7 @@ namespace Interrupts {
     void clear_gpio_interrupt_flag(int const pin_number) noexcept;
     void enable_timer6_interrupt (InterruptPriority const priority) noexcept;
     void enable_timer7_interrupt(InterruptPriority const priority) noexcept;
+    void enable_usart1_interrupt(InterruptPriority const priority) noexcept;
 }
 
 #endif

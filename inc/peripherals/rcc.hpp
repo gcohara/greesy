@@ -5,8 +5,11 @@
 #include "dac.hpp"
 
 namespace RCC {   
-    enum class APB2Peripheral { SysConfig = 0, };
-    enum class APB1Peripheral { DAC1 = 29, DAC2 = 26, TIM6 = 4, TIM7 = 5, };
+    enum class APB2Peripheral { SysConfig = 0, USART1 = 14,};
+    enum class APB1Peripheral {
+        DAC1 = 29, DAC2 = 26, TIM6 = 4, TIM7 = 5, USART2 = 17, USART3 = 18,
+        UART4 = 19, UART5 = 20,
+    };
     enum class AHBPeripheral { DMA1 = 0, DMA2 = 1, };
 
     void enable_apb2_clock(APB2Peripheral peripheral) noexcept;

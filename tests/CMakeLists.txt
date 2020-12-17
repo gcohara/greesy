@@ -9,14 +9,11 @@ add_executable(${TARGET_NAME} ${SOURCES})
 target_include_directories(${TARGET_NAME} PRIVATE
   ../inc
   ../inc/peripherals
-  # /usr/local/Cellar/cpputest/4.0/include
   )
 
 target_link_directories(${TARGET_NAME} PRIVATE
-  # /usr/local/Cellar/cpputest/4.0/lib
   )
 
 # Using this appends the library flag to the end of the command
 target_link_libraries(${TARGET_NAME}
-  # CppUTest
   )

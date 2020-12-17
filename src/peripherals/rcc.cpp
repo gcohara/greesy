@@ -46,7 +46,7 @@ namespace RCC {
         // set PLL to multiply by 9 => 72MHz
         *rcc_clock_config_register |= (7 << 18);
         // divide by two for APB1 => 32Mhz (and timers go at 72MHz)
-        *rcc_clock_config_register |= (4 << 11);
+        *rcc_clock_config_register |= (4 << 8);
         // turn PLL on, then set it as system clock
         *rcc_clock_control_register |= (1 << 24);
         *rcc_clock_config_register &= (~0u << 2);

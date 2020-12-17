@@ -2,6 +2,7 @@
 #define GPIO_HPP
 
 #include "../main.hpp"
+#include <cstdint>
 
 /* TODO:
    Spin this off into templated classes, and clean up all the methods in the src
@@ -26,6 +27,8 @@ public:
     reg32 pullup_pulldown_register;
     reg32 input_data_register;
     reg32 output_data_register;
+    reg32 alternate_function_low;
+    reg32 alternate_function_high;
 public:
     GPIO_PORT(GPIOPortLetter const pl);
     void initialise_gp_output(GPIO_PIN const& pin);
@@ -48,6 +51,8 @@ public:
     void initialise_gp_output();
     void initialise_analogue();
     void initialise_gp_input(GPIOInputPUPD const pupd);
+    void set_alternate_function(std::uint8_t const af_num) noexcept;
+    void set_pullup_pulldown(GPIOInputPUPD const pupd) noexcept;
     void output_low();
     void output_high();
     void toggle_output();

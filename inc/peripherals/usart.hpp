@@ -38,6 +38,7 @@ namespace USART {
         reg32 control2{ base_address + 0x1 };
         reg32 control3{ base_address + 0x2 };
         reg32 baud_rate_register{ base_address + 0x3 };
+        reg32 request_register{ base_address + 0x8 };
         reg32 received_data{ base_address + 0x9 };
     public:
         void enable(Config const& cfg) noexcept {
@@ -81,7 +82,9 @@ namespace USART {
         }
 
         std::uint8_t read_data() noexcept {
-            return *received_data;
+            auto volatile data{ *received_data };
+            *request_register &= (1 << 3);
+            return data;
         }
     };
     

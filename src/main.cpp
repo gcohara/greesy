@@ -22,7 +22,7 @@ GPIO_PIN static led{ portE, 10 };
 GPIO_PIN static push_button{ portA, 0 };
 GPIO_PIN static audio_out{ portA, 4 };
 GPIO_PIN static midi_input_pin{ portB, 7 };
-CircularBuffer<std::uint8_t, midi_buffer_size> static midi_buffer;
+MidiBuffer static midi_buffer;
 BasicTimers::BasicTimer<BasicTimers::TimerNumber::Tim6> static timer_6;
 BasicTimers::BasicTimer<BasicTimers::TimerNumber::Tim7> static envelope_timer;
 USART::USART<USART::USARTNumber::USART1> static midi_input;
@@ -73,12 +73,14 @@ auto main() -> int {
     Interrupts::enable_usart1_interrupt(2);
     
     while (1) {
-        auto [instruction, data] { MIDI::parse_midi_data(midi_buffer) };
-        if (instruction == MIDI::InstructionType::NoteOn) {
-            Synth::new_note(data.note_data.note_number);
-        }
-        else if (instruction == MIDI::InstructionType::NoteOff) {
-            Synth::stop_note();
+        if (!midi_buffer.buffer_empty()){
+            auto [instruction, data] { MIDI::parse_midi_data(midi_buffer) };
+            if (instruction == MIDI::InstructionType::NoteOn) {
+                Synth::new_note(data.note_data.note_number);
+            }
+            else if (instruction == MIDI::InstructionType::NoteOff) {
+                // Synth::stop_note();
+            }
         }
     }
 }
@@ -87,7 +89,7 @@ extern "C" {
     
     void EXTI0_IRQHandler() noexcept {
         Interrupts::clear_gpio_interrupt_flag(0);
-        Synth::new_note(200);
+        Synth::new_note(200.0f);
     }
     void TIM6_DAC_IRQHandler() noexcept {
         timer_6.clear_interrupt_flag();

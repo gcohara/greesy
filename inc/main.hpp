@@ -15,7 +15,7 @@ std::size_t constexpr sine_sample_length{ 256 };
 std::size_t constexpr clock_speed{ 72'000'000 };
 std::size_t constexpr desired_sample_rate{ 44'100 };
 std::size_t constexpr autoreload_value{ clock_speed / desired_sample_rate };
-std::size_t constexpr envelope_prescale{ 500 };
+std::size_t constexpr envelope_prescale{ 200 };
 std::size_t constexpr midi_buffer_size{ 1024 };
 std::float_t constexpr base_frequency {
                            static_cast<float>(desired_sample_rate)
@@ -23,7 +23,7 @@ std::float_t constexpr base_frequency {
                            sine_sample_length
 };
 
-// Circular buffer. Has a memory leak, and doesn't do anything when data is
+// Circular buffer. Can leak memory, and doesn't do anything when data is
 // overwritten, but fine for our purposes
 template <typename T, std::size_t size>
 class CircularBuffer {
@@ -63,5 +63,7 @@ public:
     }
     
 };
+
+using MidiBuffer = CircularBuffer<std::uint8_t, midi_buffer_size>;
 
 #endif

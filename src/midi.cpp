@@ -13,12 +13,15 @@ namespace {
     bool is_note_off(std::uint8_t byte) noexcept {
         return (byte == 0x80);
     }
+
+    // This is gross and hacky. Surely there's a better way?
+    void wait_for_next_byte(MidiBuffer& midi_buffer) noexcept {
+        while(midi_buffer.buffer_empty());
+    }
 }
 
 namespace MIDI {
-    ParserReturnType
-    parse_midi_data
-    (CircularBuffer<std::uint8_t, midi_buffer_size>& midi_buffer) noexcept {
+    ParserReturnType parse_midi_data(MidiBuffer& midi_buffer) noexcept {
         ParserReturnType output;
         // If the do fits, wear it
         std::uint8_t first_byte;
@@ -30,15 +33,20 @@ namespace MIDI {
             }
             first_byte = midi_buffer.read();
         } while (!is_status_byte(first_byte));
-
+        
         if (is_note_on(first_byte)) {
             output.instruction_type = InstructionType::NoteOn;
+            // Need to wait for the next value in buffer
+            wait_for_next_byte(midi_buffer);
             output.instruction_data.note_data.note_number = midi_buffer.read();
+            wait_for_next_byte(midi_buffer);
             output.instruction_data.note_data.velocity = midi_buffer.read();
         }
         else if (is_note_off(first_byte)) {
             output.instruction_type = InstructionType::NoteOff;
+            wait_for_next_byte(midi_buffer);
             output.instruction_data.note_data.note_number = midi_buffer.read();
+            wait_for_next_byte(midi_buffer);
             output.instruction_data.note_data.velocity = midi_buffer.read();
         }
         return output;

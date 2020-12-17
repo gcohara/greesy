@@ -2,6 +2,7 @@
 #include "../inc/main.hpp"
 #include "../inc/tables.hpp"
 #include <cmath>
+#include <cstdint>
 
 std::float_t const extern base_frequency;
 
@@ -51,8 +52,6 @@ namespace {
 }
 
 namespace Synth {
-    // These need moving, ideally spinning off into a synth.cpp module
-    
     void advance_envelope() noexcept {
         amplitude = decay_envelope[envelope_index];
         if (envelope_index < envelope_length - 1) {
@@ -63,6 +62,16 @@ namespace Synth {
     void new_note(std::float_t freq) noexcept {
         next_freq = freq;
         trigger_flag = true;
+    }
+
+    void new_note(std::uint8_t midi_note_number) noexcept {
+        new_note(note_number_to_freq[midi_note_number]);
+    }
+
+    void stop_note() noexcept {
+        envelope_index = envelope_length - 1;
+        amplitude = 0;
+        trigger_flag = false;
     }
     
     void play_next_sample() noexcept {
@@ -84,9 +93,5 @@ namespace Synth {
         if (static_cast<std::size_t>(wavetable_index) >= sine_sample_length) {
             wavetable_index -= sine_sample_length;
         }
-    }
-
-    int add_function(int a, int b) {
-        return a + b;
     }
 }

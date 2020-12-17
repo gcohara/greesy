@@ -21,9 +21,7 @@ namespace MIDI {
 
     // Function assumes that midi buffer receives valid and sensical data, e.g
     // every note on byte is followed by two non-status bytes and then a status byte
-    ParserReturnType
-    parse_midi_data
-    (CircularBuffer<std::uint8_t, midi_buffer_size>& midi_buffer) noexcept;
+    ParserReturnType parse_midi_data(MidiBuffer& midi_buffer) noexcept;
 }
 
 #endif

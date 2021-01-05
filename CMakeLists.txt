@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 set(CMAKE_TOOLCHAIN_FILE "cmake/arm-none-eabi.cmake")
-project(greesyn LANGUAGES C CXX ASM)
+project(greesy LANGUAGES C CXX ASM)
 
 # MCU specific
 set(LINKER_SCRIPT "../ld/stm32f3discovery.ld")

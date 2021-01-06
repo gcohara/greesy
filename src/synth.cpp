@@ -14,9 +14,11 @@ namespace {
     std::float_t envelope_increment{ 0.01f };
     std::float_t volatile next_freq{ 100.0f };
     std::float_t volatile wavetable_increment{ next_freq / base_frequency };
-    bool static volatile trigger_flag{ false };
+    std::uint8_t volatile current_midi_note{ 0 };
+    bool volatile trigger_flag{ false };
+    bool volatile stop_note_flag{ false };
     
-    /* These two contants are used to decide whether we are close enough to a
+    /* These two constants are used to decide whether we are close enough to a
      * zero-crossing to trigger a new note or not.
      * Midpoint is the zero point, and delta is the maximum distance from this
      * zero point that is considered close enough.
@@ -65,13 +67,16 @@ namespace Synth {
     }
 
     void new_note(std::uint8_t midi_note_number) noexcept {
+        current_midi_note = midi_note_number;
         new_note(note_number_to_freq[midi_note_number]);
     }
 
-    void stop_note() noexcept {
-        envelope_index = envelope_length - 1;
-        amplitude = 0;
-        trigger_flag = false;
+    void stop_note(std::uint8_t midi_note_number) noexcept {
+        if (current_midi_note == midi_note_number) {
+            stop_note_flag = true;
+            // Should set this to false in case the note is still pending
+            trigger_flag = false; 
+        }
     }
     
     void play_next_sample() noexcept {
@@ -82,6 +87,12 @@ namespace Synth {
         if (trigger_flag && output_close_to_zero_crossing(raw_output)) {
             trigger_envelope();
             play_frequency();
+        }
+        // Or stop the note
+        if (stop_note_flag && output_close_to_zero_crossing(raw_output)) {
+            envelope_index = envelope_length - 1;
+            amplitude = 0;
+            stop_note_flag = false;
         }
         
         // apply envelope

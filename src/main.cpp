@@ -79,7 +79,7 @@ auto main() -> int {
                 Synth::new_note(data.note_data.note_number);
             }
             else if (instruction == MIDI::InstructionType::NoteOff) {
-                // Synth::stop_note();
+                Synth::stop_note(data.note_data.note_number);
             }
         }
     }

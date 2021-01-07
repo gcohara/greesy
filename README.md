@@ -9,4 +9,6 @@ As a result, the peripheral code is a bit varied. I also only started adding tes
 
 Uses a single sine wave sample with a hardcoded envelope to generate sound. Accepts MIDI note-on and note-off signals.
 
-Video to come!
+#### Video below - click through to YouTube - excuse the rubbish keyboard playing :)
+
+[![Video](https://img.youtube.com/vi/hqPZdQX19pI/maxresdefault.jpg)](https://youtu.be/hqPZdQX19pI)

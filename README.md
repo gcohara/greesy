@@ -14,10 +14,18 @@ Uses a sine wave sample with a hardcoded envelope to generate sound. Accepts MID
 #### Installation
 
 Requires an STM32F3discovery board, a MIDI breakout board, and an audio jack.
-The MIDI input should be connected to GPIO pin B7.
-The audio output should be connected to GPIO pin A4.
-Download and compile using CMake.
-You can then connect the board to your computer and flash it using ```st-flash write main.bin 0x08000000```
+The MIDI input should be connected to GPIO pin `B7`, and audio output should be connected to GPIO pin `A4`.
+Download and compile using CMake:
+```
+cd greesy/
+mkdir build && cd build
+cmake ..
+make
+```
+
+You can then connect the board to your computer and flash it using 
+
+```st-flash write main.bin 0x08000000```
 
 #### Usage
 
